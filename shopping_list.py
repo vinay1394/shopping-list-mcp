@@ -11,7 +11,7 @@ def _connect() -> sqlite3.Connection:
         """
         CREATE TABLE IF NOT EXISTS items (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL
+            name TEXT NOT NULL UNIQUE COLLATE NOCASE
         )
         """
     )
@@ -30,7 +30,10 @@ def add_item(name: str) -> dict:
     if not name:
         raise ValueError("Item name cannot be empty")
     with _connect() as conn:
-        cur = conn.execute("INSERT INTO items (name) VALUES (?)", (name,))
+        try:
+            cur = conn.execute("INSERT INTO items (name) VALUES (?)", (name,))
+        except sqlite3.IntegrityError:
+            raise ValueError(f"'{name}' is already on the shopping list") from None
         return {"id": cur.lastrowid, "name": name}
 
 def delete_item(item_id: int) -> dict:
