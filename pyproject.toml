@@ -1,0 +1,19 @@
+[project]
+name = "shopping-list-mcp"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Vinay", email = "vinay1394@gmail.com" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "mcp[cli]>=2.3.0",
+]
+
+[project.scripts]
+shopping-list-mcp = "shopping_list_mcp:main"
+
+[build-system]
+requires = ["uv_build>=0.13.0,<0.14.0"]
+build-backend = "uv_build"
